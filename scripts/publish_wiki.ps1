@@ -20,10 +20,8 @@ if (Test-Path $wikiClone) {
 New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
 
 Write-Host "Clonando GitHub Wiki..." -ForegroundColor Cyan
-try {
-    git clone $wikiUrl $wikiClone
-}
-catch {
+git clone $wikiUrl $wikiClone
+if ($LASTEXITCODE -ne 0) {
     throw @"
 No se pudo clonar la Wiki de GitHub.
 
@@ -56,16 +54,25 @@ foreach ($page in $pages) {
 
 Push-Location $wikiClone
 try {
+    $wikiBranch = (git branch --show-current).Trim()
+    if (-not $wikiBranch) {
+        throw "No se pudo determinar la rama activa del repositorio Wiki."
+    }
+
     git add .
+    if ($LASTEXITCODE -ne 0) { throw "Falló git add en la Wiki." }
 
     $status = git status --porcelain
     if (-not $status) {
         Write-Host "La Wiki ya está sincronizada; no hay cambios para publicar." -ForegroundColor Yellow
-        exit 0
+        return
     }
 
     git commit -m $CommitMessage
-    git push origin master
+    if ($LASTEXITCODE -ne 0) { throw "Falló git commit en la Wiki." }
+
+    git push origin $wikiBranch
+    if ($LASTEXITCODE -ne 0) { throw "Falló git push en la Wiki." }
 
     Write-Host "Wiki publicada correctamente." -ForegroundColor Green
     Write-Host "https://github.com/dinatalediego/ciberseguridad_de_ia/wiki"
