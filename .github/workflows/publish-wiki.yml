@@ -1,0 +1,83 @@
+name: Publish academic wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "01_fundamentos/**"
+      - "02_ia_y_superficie_de_ataque/**"
+      - "labs/**"
+      - "templates/**"
+      - "docs/**"
+      - "bibliografia/**"
+      - "wiki/**"
+      - ".github/workflows/publish-wiki.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-academic-wiki
+  cancel-in-progress: true
+
+jobs:
+  publish-wiki:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build flat GitHub Wiki
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf .wiki-build
+          mkdir -p .wiki-build
+
+          cp wiki/Home.md .wiki-build/Home.md
+          cp wiki/_Sidebar.md .wiki-build/_Sidebar.md
+          cp 01_fundamentos/01_stride.md .wiki-build/01-STRIDE-y-propiedades-de-seguridad.md
+          cp 02_ia_y_superficie_de_ataque/README.md .wiki-build/02-Superficie-de-ataque-en-IA.md
+          cp labs/lab_01_stride_en_sistema_ia.md .wiki-build/03-Lab-STRIDE-de-un-sistema-de-IA.md
+          cp templates/threat_model_stride.md .wiki-build/04-Template-Threat-Model-STRIDE.md
+          cp docs/roadmap_academico.md .wiki-build/05-Roadmap-academico.md
+          cp bibliografia/README.md .wiki-build/06-Bibliografia.md
+
+          echo "Wiki build contents:"
+          find .wiki-build -maxdepth 1 -type f -printf ' - %f\n' | sort
+
+      - name: Publish to native GitHub Wiki
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          WIKI_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git"
+
+          if ! git clone "$WIKI_URL" .wiki-repo; then
+            echo "::error title=GitHub Wiki no inicializada::GitHub exige crear una primera página en la pestaña Wiki antes de que exista el repositorio .wiki.git. Crea Home una sola vez y luego vuelve a ejecutar este workflow."
+            exit 1
+          fi
+
+          # La Wiki nativa es plana. El repositorio principal sigue siendo la fuente de verdad.
+          find .wiki-repo -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a .wiki-build/. .wiki-repo/
+
+          git -C .wiki-repo config user.name "github-actions[bot]"
+          git -C .wiki-repo config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C .wiki-repo add -A
+
+          if git -C .wiki-repo diff --cached --quiet; then
+            echo "Wiki already synchronized."
+            exit 0
+          fi
+
+          git -C .wiki-repo commit -m "docs: sync wiki from ${GITHUB_SHA::7}"
+          git -C .wiki-repo push origin HEAD
+
+          echo "Wiki synchronized successfully."
