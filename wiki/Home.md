@@ -30,4 +30,4 @@ Cada sesión debería dejar al menos una pieza reutilizable:
 
 La meta es que el repositorio evolucione desde **apuntes** hacia un **portfolio de AI Security Engineering**, con threat models, laboratorios, matrices de riesgo, evidencia y pequeñas automatizaciones de seguridad.
 
-> La wiki es la capa de navegación. Los archivos académicos del repositorio continúan siendo la fuente de verdad y pueden publicarse automáticamente a la Wiki de GitHub con `scripts/publish_wiki.ps1`.
+> La wiki es la capa de navegación. Los archivos académicos del repositorio son la fuente de verdad. Cada cambio relevante que llegue a `main` dispara `.github/workflows/publish-wiki.yml`, que reconstruye y sincroniza automáticamente la Wiki nativa de GitHub.
