@@ -6,6 +6,14 @@ La meta no es acumular diapositivas: es convertir cada sesión en una base técn
 
 **concepto → amenaza → activo → control → laboratorio → evidencia → conclusión**.
 
+## Tres capas del proyecto
+
+- **Repositorio**: fuente de verdad versionada, laboratorios, notas y activos.
+- **Wiki académica**: lectura secuencial y navegación por temas.
+- **Web académica**: experiencia visual e interactiva con atlas, casos y microquizzes.
+
+Web prevista: **https://dinatalediego.github.io/ciberseguridad_de_ia/**
+
 ## Objetivos
 
 - Dominar fundamentos de seguridad relevantes para IA, ML, LLM, RAG, agentes y MLOps.
@@ -20,25 +28,24 @@ La meta no es acumular diapositivas: es convertir cada sesión en una base técn
 ```text
 ciberseguridad_de_ia/
 ├── 01_fundamentos/
-│   └── 01_stride.md
 ├── 02_ia_y_superficie_de_ataque/
-│   └── README.md
+├── 03_seguridad_ml/
+├── 04_llm_rag_agentes/
+├── 05_cadena_suministro/
 ├── entretenimiento/
-│   └── 01_stride_en_rimas.md
 ├── labs/
-│   └── lab_01_stride_en_sistema_ia.md
 ├── templates/
-│   └── threat_model_stride.md
 ├── bibliografia/
-│   └── README.md
-├── docs/
-│   └── roadmap_academico.md
-└── README.md
+├── assets/
+│   └── wiki/
+├── web/                  # sitio académico interactivo
+├── wiki/                 # fuente de páginas para GitHub Wiki
+└── .github/workflows/    # publicación automática
 ```
 
 ## Sesión 1 — STRIDE
 
-La primera pieza formal del repositorio parte del principio de que **STRIDE nombra la forma en que se rompe una propiedad de seguridad**:
+STRIDE nombra la forma en que se rompe una propiedad de seguridad:
 
 | Propiedad | Cómo se rompe | STRIDE |
 |---|---|---|
@@ -53,54 +60,46 @@ Ver: [`01_fundamentos/01_stride.md`](01_fundamentos/01_stride.md).
 
 ### 🎭 Versión lúdica — STRIDE en rimas
 
-Para memorizar STRIDE sin perder rigor, el repositorio también incluye una versión con **rimas, ejemplos laborales, situaciones de cultura general y un mini juego**.
-
 Ver: [`entretenimiento/01_stride_en_rimas.md`](entretenimiento/01_stride_en_rimas.md).
 
-Idea mnemotécnica central:
+Idea mnemotécnica: **fingir → cambiar → negar → revelar → bloquear → escalar**.
 
-**fingir → cambiar → negar → revelar → bloquear → escalar**.
+## Atlas visual
+
+El repositorio incluye visuales académicos para:
+
+- envenenamiento de datos y backdoors;
+- prompt injection, disclosure y elevación de privilegios;
+- límites de confianza y cadena de suministro;
+- riesgos al cargar modelos serializados;
+- hash y firma digital;
+- OWASP y MITRE ATLAS;
+- casos reales de artefactos maliciosos.
+
+La web presenta estos materiales como una galería navegable y los conecta con microcasos y preguntas.
 
 ## Cómo se estudiará cada tema
 
-Cada tema debe intentar responder seis preguntas:
+Cada tema debe responder:
 
-1. **¿Qué activo estoy protegiendo?** Datos, modelo, identidad, prompt, vector store, herramienta, API, secreto, logs, etc.
-2. **¿Qué propiedad de seguridad importa?** Autenticación, integridad, auditoría, confidencialidad, disponibilidad o autorización.
-3. **¿Cómo puede romperse?** Amenaza concreta y actor plausible.
-4. **¿Qué impacto tendría?** Técnico, operativo, económico, legal o reputacional.
-5. **¿Qué control reduce el riesgo?** Prevención, detección, respuesta y evidencia.
-6. **¿Cómo lo demuestro?** Laboratorio, prueba, log, captura o métrica reproducible.
+1. **¿Qué activo estoy protegiendo?**
+2. **¿Qué propiedad de seguridad importa?**
+3. **¿Cómo puede romperse?**
+4. **¿Qué impacto tendría?**
+5. **¿Qué control reduce el riesgo?**
+6. **¿Cómo lo demuestro?**
 
 ## Estándar para los laboratorios
 
-Todo laboratorio debería contener:
+Todo laboratorio debería contener objetivo, arquitectura, activos, límites de confianza, amenaza, precondiciones, prueba controlada, evidencia, mitigación y riesgo residual.
 
-- objetivo de aprendizaje;
-- sistema o componente analizado;
-- activos y límites de confianza;
-- amenaza y categoría STRIDE;
-- precondiciones;
-- prueba controlada;
-- evidencia observada;
-- control o mitigación;
-- riesgo residual;
-- reflexión final.
+> Los laboratorios son educativos y deben ejecutarse únicamente sobre sistemas propios, entornos de práctica o activos para los que exista autorización explícita.
 
-> Los laboratorios de este repositorio son educativos y deben ejecutarse únicamente sobre sistemas propios, entornos de práctica o activos para los que exista autorización explícita.
+## Publicación automática
 
-## Marcos de referencia
-
-La ruta irá conectando los apuntes con fuentes primarias y marcos reconocidos, entre ellos:
-
-- STRIDE / threat modeling;
-- NIST Cybersecurity Framework y NIST AI Risk Management Framework;
-- OWASP para aplicaciones web, APIs y sistemas con LLM;
-- MITRE ATT&CK y MITRE ATLAS;
-- principios de Zero Trust, least privilege, secure-by-design y defense-in-depth.
-
-Las referencias se documentan en [`bibliografia/README.md`](bibliografia/README.md).
+- `.github/workflows/publish-wiki.yml` sincroniza el material académico con GitHub Wiki.
+- `.github/workflows/deploy-academic-web.yml` publica la web visual mediante GitHub Pages.
 
 ## Roadmap
 
-La evolución propuesta está en [`docs/roadmap_academico.md`](docs/roadmap_academico.md). El objetivo final es que el repositorio pase de **apuntes académicos** a un **portfolio de AI Security Engineering** con threat models, laboratorios, matrices de riesgo, pruebas y pequeños proyectos.
+Ver [`docs/roadmap_academico.md`](docs/roadmap_academico.md). El objetivo final es evolucionar desde apuntes a un **portfolio de AI Security Engineering** con threat models, laboratorios, matrices de riesgo, pruebas y proyectos reproducibles.
