@@ -23,6 +23,8 @@ ciberseguridad_de_ia/
 │   └── 01_stride.md
 ├── 02_ia_y_superficie_de_ataque/
 │   └── README.md
+├── entretenimiento/
+│   └── 01_stride_en_rimas.md
 ├── labs/
 │   └── lab_01_stride_en_sistema_ia.md
 ├── templates/
@@ -48,6 +50,16 @@ La primera pieza formal del repositorio parte del principio de que **STRIDE nomb
 | Autorización | Alguien realiza acciones fuera de sus permisos | **Elevation of Privilege** |
 
 Ver: [`01_fundamentos/01_stride.md`](01_fundamentos/01_stride.md).
+
+### 🎭 Versión lúdica — STRIDE en rimas
+
+Para memorizar STRIDE sin perder rigor, el repositorio también incluye una versión con **rimas, ejemplos laborales, situaciones de cultura general y un mini juego**.
+
+Ver: [`entretenimiento/01_stride_en_rimas.md`](entretenimiento/01_stride_en_rimas.md).
+
+Idea mnemotécnica central:
+
+**fingir → cambiar → negar → revelar → bloquear → escalar**.
 
 ## Cómo se estudiará cada tema
 
